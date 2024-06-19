@@ -1,5 +1,4 @@
 from flask import Flask, render_template
-import pandas
 
 app = Flask(__name__)  # É como fazem os profissionais, colocam __name__ em vez de 'word'
 
