@@ -1,4 +1,5 @@
 from flask import Flask, render_template
+import pandas as pd
 
 app = Flask(__name__)  # É como fazem os profissionais, colocam __name__ em vez de 'word'
 
@@ -10,7 +11,10 @@ def home():
 
 @app.route('/api/v1/<station>/<date>')
 def station_date(station, date):
-    temperature = 23
+    print('data_small/TG_STAID' + str(station).zfill(6) + '.txt')
+    data_frame = pd.read_csv('data_small/TG_STAID' + str(station).zfill(6) + '.txt', skiprows=20,
+                             parse_dates=['    DATE'])
+    temperature = data_frame.loc[data_frame['    DATE'] == date]['   TG'].squeeze() / 10
     return {'station': station,
             'date': date,
             'temperature': temperature}
