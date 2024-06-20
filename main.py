@@ -33,18 +33,10 @@ def all_data(station_number):
     data_frame = pd.read_csv('data_small/TG_STAID' + str(station_number).zfill(6) + '.txt', skiprows=20,
                              parse_dates=['    DATE'])[['    DATE', '   TG']]
     data_frame['   TG'] = data_frame['   TG'].mask(data_frame['   TG'] == -9999, numpy.nan) / 10
-    number = (stations.loc[stations['STAID'] == int(station_number)]['STANAME                                 '].squeeze()
-              .strip())
+    number = (stations.loc[stations['STAID'] == int(station_number)]['STANAME                                 ']
+              .squeeze().strip())
     return render_template('station.html', station=data_frame.to_html(),
                            text=f'Here is the information about the station {station_number}: {number}')
-
-
-@app.route('/api/v1/<station_number>/<year>')
-def yearly(station_number, year):
-    data_frame = pd.read_csv('data_small/TG_STAID' + str(station_number).zfill(6) + '.txt', skiprows=20,
-                             parse_dates=['    DATE'])[['    DATE', '   TG']].to_html()
-    return render_template('station.html', station=data_frame, text=f'Here is the information about the station '
-                                                                    f'{station_number}')
 
 
 @app.route('/tutorial')
